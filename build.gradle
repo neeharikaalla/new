@@ -13,7 +13,6 @@ version '1.0-1'
 
 apply plugin: 'groovy'
 apply plugin: 'java'
-//apply plugin: 'org.springframework.boot'
 apply plugin: 'war'
 apply plugin: 'idea'
 
@@ -40,8 +39,6 @@ dependencies {
     compile (group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.3.5.RELEASE')
     compile (group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '1.3.5.RELEASE')
 
-
-    // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '8.5.27'
 
 
