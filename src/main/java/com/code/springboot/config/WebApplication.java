@@ -1,4 +1,4 @@
-package com.code.springboot.Config;
+package com.code.springboot.config;
 
 import com.code.springboot.controller.HelloController;
 import com.code.springboot.service.DistanceService;
