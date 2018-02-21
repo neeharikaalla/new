@@ -2,6 +2,8 @@ package com.code.springboot.controller;
 
 import com.code.springboot.service.DistanceService;
 import com.code.springboot.service.NewModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -11,23 +13,39 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+
+/**
+ * Main controller for all user interactions
+ */
 @Controller
 public class HelloController {
     private DistanceService distanceService;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public HelloController(DistanceService distanceService) {
         this.distanceService = distanceService;
     }
 
-    @RequestMapping(value = "/")
+    /**
+     * Default get method returns new welcome page
+     * @return welcome.jsp
+     */
+    @RequestMapping()
     public ModelAndView home() {
+        log.info("reached default get returning welcome ");
         NewModel newModel = new NewModel();
-
-
         return new ModelAndView("welcome", "command", newModel);
     }
 
 
+    /**
+     * Second view returns distance from A-b with other options like weather...
+     * @param origin
+     * @param destination
+     * @param model
+     * @param response
+     * @return details
+     */
     @RequestMapping(value = "/distance/s", method = RequestMethod.GET)
     public ModelAndView de(@RequestParam(value = "origin", required = false) String origin,
                            @RequestParam(value = "destination", required = false) String destination, ModelMap model, HttpServletResponse response) {
