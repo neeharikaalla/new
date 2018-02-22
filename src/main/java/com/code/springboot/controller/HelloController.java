@@ -2,8 +2,13 @@ package com.code.springboot.controller;
 
 import com.code.springboot.service.DistanceService;
 import com.code.springboot.service.NewModel;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -11,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Map;
 
 
@@ -36,7 +43,6 @@ public class HelloController {
         NewModel newModel = new NewModel();
         return new ModelAndView("welcome", "command", newModel);
     }
-
 
     /**
      * Second view returns distance from A-b with other options like weather...
@@ -67,15 +73,27 @@ public class HelloController {
     }
 
     @RequestMapping("/weather")
-    public ModelAndView wea(Model model, @RequestParam(value = "name", required = false) String name) {
+    public ModelAndView wea(Model model,
+                            @RequestParam(value = "name", required = false) String name, HttpServletResponse response) throws ParseException, IOException {
+        response.addHeader("Access-Control-Allow-Origin", "*")
         Map weatherMap = distanceService.getWeather(name);
         model.addAttribute("sunSet", weatherMap.get("sunSet"));
 
         model.addAttribute("sun_rise", weatherMap.get("sun_rise"));
         model.addAttribute("time", weatherMap.get("time"));
-        model.addAttribute("timezone", weatherMap.get("timezone"));
+        model.addAttribute("timezone", weatherMap.get("timezone"))
 
 
         return new ModelAndView("moreWeather", "command", model);
     }
+
+
+    @RequestMapping("/weather/api")
+    public ResponseEntity<Map<Object, Object>> weat(
+            @RequestParam(value = "name", required = false) String name) throws ParseException, IOException {
+
+        return new ResponseEntity<Map<Object, Object>>(distanceService.getWeather(name), HttpStatus.OK)
+    }
+
+
 }
