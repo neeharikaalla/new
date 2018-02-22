@@ -78,23 +78,26 @@ public class HelloController {
 
 
     @RequestMapping("/weather/api")
-    public ResponseEntity<Map<Object, Object>> weat(@RequestParam(value = "name", required = false) String name) throws ParseException, IOException {
+    public ResponseEntity<Map<Object, Object>> weat(
+            @RequestParam(value = "name", required = false) String name) throws ParseException, IOException {
 
-        return new ResponseEntity<Map<Object, Object>>(distanceService.getWeather(name), HttpStatus.OK)
+        return new ResponseEntity<Map<Object, Object>>
+                (distanceService.getWeather(name), HttpStatus.OK)
     }
 
     @RequestMapping("/9flags/api")
-    public ResponseEntity<Map<Object, Object>> get9FlatsApi(@RequestParam(value = "name", required = false) String name) throws ParseException, IOException {
+    public ResponseEntity<Map<Object, Object>> get9FlatsApi(@RequestParam(value = "name", required = false)
+                                                                    String name) throws ParseException, IOException {
 
         return new ResponseEntity<Map<Object, Object>>(distanceService.get9FlatsApi(name), HttpStatus.OK)
     }
 
     @RequestMapping("/9flags")
     public ModelAndView flags(Model model,
-                            @RequestParam(value = "name", required = false) String name, HttpServletResponse response) throws ParseException, IOException {
+                              @RequestParam(value = "name", required = false) String name,
+                              HttpServletResponse response) throws ParseException, IOException {
         response.addHeader("Access-Control-Allow-Origin", "*")
         model.addAttribute("destination", name)
         return new ModelAndView("9flags", "command", model)
     }
 }
-
