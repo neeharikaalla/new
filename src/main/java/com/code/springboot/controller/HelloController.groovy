@@ -97,3 +97,4 @@ public class HelloController {
         return new ModelAndView("9flags", "command", model)
     }
 }
+
