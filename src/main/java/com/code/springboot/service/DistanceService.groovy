@@ -1,9 +1,9 @@
 package com.code.springboot.service
 
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import org.json.simple.JSONObject
 import org.json.simple.parser.JSONParser
+import org.springframework.http.*
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 
@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate
 class DistanceService {
     private RestTemplate rest
     static private String API_KEY = 'AIzaSyAlftCr2npVtQXLIc2LFLj5h91NdsBIeI4'
+    static private String Flags_Api_key = 'yk0X46EOgOfQ657Deu8Qv0RrvKDBGpqkCtPgKWso'
     private String url
     JSONObject jsonObject = new JSONObject()
     JSONParser parser = new JSONParser()
@@ -44,7 +45,6 @@ class DistanceService {
 
     Map<Object, Object> getWeather(String destination) {
         def res
-        def weather
         def weatherMap = ImmutableMap.builder()
 
         try {
@@ -54,21 +54,43 @@ class DistanceService {
         }
         jsonObject = (JSONObject) parser.parse(res)
 
-
+        ResponseEntity<String> response
         try {
-            weather = rest.getForObject("https://www.metaweather.com/api/location/${jsonObject.woeid}", Object)
+            HttpHeaders headers = new HttpHeaders()
+            headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+
+            HttpEntity entity = new HttpEntity(headers)
+
+
+            response = rest.exchange(
+                    "https://www.metaweather.com/api/location/${jsonObject.woeid}", HttpMethod.GET, entity, String.class, "")
+
         } catch (Exception e) {
             throw e
         }
 
+        weatherMap.put('consolidated_weather', response.getBody().toString()).build()
 
-        weatherMap.put('sunSet',weather.sun_set)
-        weatherMap.put('sun_rise',weather.sun_rise)
-
-        weatherMap.put('time',weather.time)
-        weatherMap.put('timezone',weather.timezone)
-        def consolidated_weatherList = ImmutableList.builder()
-        weatherMap.put('consolidated_weather',consolidated_weatherList.add(weather.consolidated_weather))
-        weatherMap.build()
     }
+
+    Map<String, Object> get9FlatsApi(def destination) {
+       def response
+        def responseMap = ImmutableMap.builder()
+        try {
+            HttpHeaders headers = new HttpHeaders()
+            headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+
+            HttpEntity entity = new HttpEntity(headers)
+
+
+            response = rest.getForObject(
+                    "https://www.9flats.com/api/v4/places?client_id=${Flags_Api_key}&search[query]=${destination}",Object)
+
+        } catch (Exception e) {
+            throw e
+        }
+        responseMap.put("9flats", response).build()
+
+    }
+
 }
