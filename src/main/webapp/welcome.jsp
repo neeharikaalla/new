@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Travel Assist</title>
+
 </head>
 <style>
 input[type=text], select {
@@ -36,8 +37,17 @@ div {
     background-color: #f2f2f2;
     padding: 20px;
 }
+#content,footer{
+max-width: 700px;
+margin-left: auto;
+margin-right: auto;
+text-align: center;
+}
+
+
 </style>
 <body style="background-color:powderblue;">
+<div id="content">
 <h1 style="text-align:center;">Welcome to Your Travel Assist</h1>
 <div>
 <form action="distance/s" style="text-align:center;">
@@ -46,7 +56,7 @@ div {
   <input type="submit" value="Submit">
 </form>
 </div>
-
+</div>
 <footer  style="text-align:center;">
  <small>&copy; Copyright 2058, Neeharika Inc</small>
 </footer>
