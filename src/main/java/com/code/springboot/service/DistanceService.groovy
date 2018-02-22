@@ -80,7 +80,6 @@ class DistanceService {
             HttpHeaders headers = new HttpHeaders()
             headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE)
 
-            HttpEntity entity = new HttpEntity(headers)
 
 
             response = rest.getForObject(
