@@ -39,6 +39,17 @@ public class WebApplication extends SpringBootServletInitializer {
     HelloController helloController(){
         return new HelloController(distanceService());
     }
+    
+      @Bean
+    NewServiceController newServiceController() {
+        return new NewServiceController();
+    }
+
+
+    @Bean
+    SecondServiceController secondServiceController(){
+        return new SecondServiceController();
+    }
 }
 
 
